@@ -1,4 +1,4 @@
-export type Pokemon = {
+export type MyObject = {
     id: number,
     name: string,
     imgUrl: string,

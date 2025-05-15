@@ -1,31 +1,31 @@
-import { Pokemon } from "@/types/pokemon"
+import { MyObject } from "@/types/myObject"
 
-import { getPokemonFromCache, setPokemonInCache } from "./pokemonCache"
+import { getObjectFromCache, setObjectInCache } from "./objectCache"
 
-export async function fetchSomePokemon(limit: number, offset: number){
+export async function fetchSomeItems(limit: number, offset: number){
     const url = `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`
     const r = await fetch(url)
     const data = await r.json()
     const results = data["results"]
-    const pokemon: Pokemon[] = [];
+    const pokemon: MyObject[] = [];
 
     for (let i = 0; i < results.length; i++){
-        pokemon.push(await fetchPokemon(results[i]["url"]))
+        pokemon.push(await fetchItem(results[i]["url"]))
     }
     return pokemon;
 }
 
-async function fetchPokemon(url: string){
+async function fetchItem(url: string){
 
-    let pokemon = getPokemonFromCache(url)
-    if (pokemon){
-        return pokemon
+    let myObject = getObjectFromCache(url)
+    if (myObject){
+        return myObject
     }
 
     console.log(`Fetching: ${url}`)
     const r = await fetch(url)
     const data = await r.json()
-    pokemon = {
+    myObject = {
         id: data["id"],
         name: data["name"],
         imgUrl: data["sprites"]["other"]["official-artwork"]["front_default"],
@@ -35,8 +35,8 @@ async function fetchPokemon(url: string){
         types: data["types"].map((obj: any)=>obj["type"]["name"]),
     }
 
-    setPokemonInCache(url, pokemon)
-    return pokemon
+    setObjectInCache(url, myObject)
+    return myObject
 }
 
 export async function fetchTypes(){

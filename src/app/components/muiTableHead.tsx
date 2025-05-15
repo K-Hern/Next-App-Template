@@ -1,6 +1,6 @@
 import { TableHead, TableRow, TableCell } from "@mui/material";
 
-export default function PokemonTableHead(props: {headers: String[]}) {
+export default function MuiTableHead(props: {headers: String[]}) {
 
     return (
         <TableHead>

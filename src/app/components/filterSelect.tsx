@@ -1,13 +1,15 @@
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
+import { useMyProvider } from "../context/MyContext";
 
-export function FilterSelect(props: {types: string[], currentFilterType: string, setTypeToFilter: Dispatch<SetStateAction<string>>}) {
+export function FilterSelect() {
 
-    const [filter, setFilter] = useState<string>("");
+    const { types, activeFilter, setActiveFilter } = useMyProvider();
 
-    function handleSelect(e: React.ChangeEvent<HTMLInputElement>) {
-        setFilter(e.target.value);
-        props.setTypeToFilter(e.target.value);
+    // const [filter, setFilter] = useState<string>("");
+
+    function handleSelect(e: SelectChangeEvent) {
+        setActiveFilter(e.target.value);
     }
 
     return (
@@ -17,13 +19,13 @@ export function FilterSelect(props: {types: string[], currentFilterType: string,
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={filter}
+                    value={activeFilter}
                     label="Type"
                     onChange={handleSelect}
                 >
                     <MenuItem value={""}>Any Type</MenuItem>
                     {
-                        props.types.map((t, index)=>
+                        types.map((t, index)=>
                             <MenuItem key={index} value={t}>{t}</MenuItem>
                         )
                     }
